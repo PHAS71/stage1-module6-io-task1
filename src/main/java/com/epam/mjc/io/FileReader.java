@@ -14,12 +14,12 @@ public class FileReader {
             while((ch = fileInputStream.read()) != -1){
                 sb.append((char)ch);
             }
-            String[] data = sb.toString().split(": | |\n |\r\n |\r");
+            String[] data = sb.toString().replaceAll("[ :\n\t\r]", "").split("Name|Age|Email|Phone");
 
             String name = data[1];
-            int age = Integer.parseInt(data[3]);
-            String email = data[5];
-            Long phone = Long.parseLong(data[7]);
+            int age = Integer.parseInt(data[2]);
+            String email = data[3];
+            Long phone = Long.parseLong(data[4]);
 
             return new Profile(name, age, email, phone);
         } catch (IOException e) {
