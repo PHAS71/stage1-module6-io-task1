@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class FileReader {
 
-    public Profile getDataFromFile(File file) {
+    public Profile getDataFromFile(File file) throws FileFormatException {
         try(FileInputStream fileInputStream = new FileInputStream(file)) {
             int ch;
             StringBuilder sb = new StringBuilder();
@@ -16,14 +16,16 @@ public class FileReader {
             }
             String[] data = sb.toString().replaceAll("[ :\n\t\r]", "").split("Name|Age|Email|Phone");
 
-            String name = data[1];
-            int age = Integer.parseInt(data[2]);
-            String email = data[3];
-            Long phone = Long.parseLong(data[4]);
+                String name = data[1];
+                int age = Integer.parseInt(data[2]);
+                String email = data[3];
+                Long phone = Long.parseLong(data[4]);
+                return new Profile(name, age, email, phone);
 
-            return new Profile(name, age, email, phone);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } catch (NumberFormatException e) {
+            throw new FileFormatException("Failed to read profile", e);
         }
     }
 }
